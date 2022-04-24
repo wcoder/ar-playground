@@ -148,9 +148,14 @@
         <Compile Include="Extensions\SCNNodeExtensions.cs" />
         <Compile Include="Nodes\SphereNode.cs" />
         <Compile Include="Extensions\UIImageExtesnions.cs" />
+        <Compile Include="Nodes\Model3DNode.cs" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\world-map.jpg" />
+      <BundleResource Include="Resources\moonmap2.jpg" />
+    </ItemGroup>
+    <ItemGroup>
+      <SceneKitAsset Include="Resources\moon.dae" />
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

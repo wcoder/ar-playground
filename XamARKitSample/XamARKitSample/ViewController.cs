@@ -66,6 +66,13 @@ namespace XamARKitSample
             };
             _sceneView.Scene.RootNode.AddChildNode(sphereNode);
 
+            // add 3d object
+            var model3DNode = new Model3DNode("moon.dae")
+            {
+                Position = new SCNVector3(0, 0, -25f)
+            };
+            _sceneView.Scene.RootNode.AddChildNode(model3DNode);
+
             // add gestures
             var tapGestureRecognizer = new UITapGestureRecognizer(OnTapGesture);
             _sceneView.AddGestureRecognizer(tapGestureRecognizer);

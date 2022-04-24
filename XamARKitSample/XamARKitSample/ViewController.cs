@@ -20,8 +20,9 @@ namespace XamARKitSample
         {
             _sceneView = new ARSCNView
             {
-                AutoenablesDefaultLighting = true,
+                //AutoenablesDefaultLighting = true,
                 ShowsStatistics = true,
+                Delegate = new SceneViewDelegate(),
             };
             View.AddSubview(_sceneView);
         }
@@ -41,7 +42,8 @@ namespace XamARKitSample
             {
                 AutoFocusEnabled = true,
                 LightEstimationEnabled = true,
-                WorldAlignment = ARWorldAlignment.Gravity
+                //WorldAlignment = ARWorldAlignment.Gravity,
+                DetectionImages = ARReferenceImage.GetReferenceImagesInGroup("AR Resources", null),
             }, ARSessionRunOptions.ResetTracking | ARSessionRunOptions.RemoveExistingAnchors);
 
             // add image

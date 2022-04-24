@@ -121,11 +121,15 @@
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png">
             <Visible>false</Visible>
         </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\AR Resources.arresourcegroup\Contents.json" />
+        <ImageAsset Include="Assets.xcassets\AR Resources.arresourcegroup\BookCover.arreferenceimage\BookCover.jpg" />
+        <ImageAsset Include="Assets.xcassets\AR Resources.arresourcegroup\BookCover.arreferenceimage\Contents.json" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Resources\" />
         <Folder Include="Nodes\" />
         <Folder Include="Extensions\" />
+        <Folder Include="Assets.xcassets\AR Resources.arresourcegroup\BookCover.arreferenceimage\" />
     </ItemGroup>
     <ItemGroup>
         <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -149,6 +153,8 @@
         <Compile Include="Nodes\SphereNode.cs" />
         <Compile Include="Extensions\UIImageExtesnions.cs" />
         <Compile Include="Nodes\Model3DNode.cs" />
+        <Compile Include="SceneViewDelegate.cs" />
+        <Compile Include="Nodes\PlaneNode.cs" />
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\world-map.jpg" />

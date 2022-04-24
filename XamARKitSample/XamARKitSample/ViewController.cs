@@ -1,6 +1,7 @@
 ﻿using ARKit;
 using SceneKit;
 using System;
+using System.Linq;
 using UIKit;
 using XamARKitSample.Nodes;
 
@@ -47,6 +48,12 @@ namespace XamARKitSample
             };
 
             _sceneView.Scene.RootNode.AddChildNode(imageNode);
+
+            var tapGestureRecognizer = new UITapGestureRecognizer(OnTapGesture);
+            _sceneView.AddGestureRecognizer(tapGestureRecognizer);
+
+            var pinchGestureRecognizer = new UIPinchGestureRecognizer(OnPinchGesture);
+            _sceneView.AddGestureRecognizer(pinchGestureRecognizer);
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -59,6 +66,38 @@ namespace XamARKitSample
         public override void DidReceiveMemoryWarning()
         {
             base.DidReceiveMemoryWarning();
+        }
+
+        private void OnTapGesture(UITapGestureRecognizer gestureRecognizer)
+        {
+            var hit = FindHit(gestureRecognizer);
+
+            hit?.Node?.RemoveFromParentNode();
+        }
+
+        private void OnPinchGesture(UIPinchGestureRecognizer gestureRecognizer)
+        {
+            var hit = FindHit(gestureRecognizer);
+
+            if (hit != null)
+            {
+                var node = hit.Node;
+
+                var scaleX = (float)gestureRecognizer.Scale * node.Scale.X;
+                var scaleY = (float)gestureRecognizer.Scale * node.Scale.Y;
+
+                node.Scale = new SCNVector3(scaleX, scaleY, zPosition);
+                gestureRecognizer.Scale = 1; // reset
+            }
+        }
+
+        private SCNHitTestResult FindHit(UIGestureRecognizer gestureRecognizer)
+        {
+            var area = gestureRecognizer.View as SCNView;
+            var point = gestureRecognizer.LocationInView(area);
+            var hits = area.HitTest(point, new SCNHitTestOptions());
+            var hit = hits.FirstOrDefault();
+            return hit;
         }
     }
 }

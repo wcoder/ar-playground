@@ -12,7 +12,8 @@ namespace XamARKitSample
     {
         const float zPosition = -0.25f;
 
-        private ARSCNView _sceneView;
+        private readonly ARSCNView _sceneView;
+
         private bool _isAnimating;
 
         public ViewController(IntPtr handle) : base(handle)
@@ -69,6 +70,9 @@ namespace XamARKitSample
             var tapGestureRecognizer = new UITapGestureRecognizer(OnTapGesture);
             _sceneView.AddGestureRecognizer(tapGestureRecognizer);
 
+            var longPressGestureRecognizer = new UILongPressGestureRecognizer(OnLongPressGesture);
+            _sceneView.AddGestureRecognizer(longPressGestureRecognizer);
+
             var pinchGestureRecognizer = new UIPinchGestureRecognizer(OnPinchGesture);
             _sceneView.AddGestureRecognizer(pinchGestureRecognizer);
 
@@ -96,8 +100,6 @@ namespace XamARKitSample
                 var node = hit.Node;
                 if (node != null)
                 {
-                    //hit.Node.RemoveFromParentNode();
-
                     if (_isAnimating)
                     {
                         node.RemoveRotationAction();
@@ -112,6 +114,13 @@ namespace XamARKitSample
             }
         }
 
+        private void OnLongPressGesture(UILongPressGestureRecognizer gestureRecognizer)
+        {
+            var hit = FindHit(gestureRecognizer);
+
+            hit?.Node?.RemoveFromParentNode();
+        }
+
         private void OnPinchGesture(UIPinchGestureRecognizer gestureRecognizer)
         {
             var hit = FindHit(gestureRecognizer);
@@ -121,8 +130,9 @@ namespace XamARKitSample
 
                 var scaleX = (float)gestureRecognizer.Scale * node.Scale.X;
                 var scaleY = (float)gestureRecognizer.Scale * node.Scale.Y;
+                var scaleZ = (float)gestureRecognizer.Scale * node.Scale.Z;
 
-                node.Scale = new SCNVector3(scaleX, scaleY, zPosition);
+                node.Scale = new SCNVector3(scaleX, scaleY, scaleZ);
                 gestureRecognizer.Scale = 1; // reset
             }
         }

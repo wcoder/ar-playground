@@ -20,7 +20,7 @@ namespace XamARKitSample.Nodes
             var material = new SCNMaterial();
             var image = UIImage.FromBundle(fileName);
             material.Diffuse.Contents = image;
-            terial.DoubleSided = true;
+            material.DoubleSided = true;
 
             var geometry = SCNSphere.Create(size);
             geometry.Materials = new[] { material };

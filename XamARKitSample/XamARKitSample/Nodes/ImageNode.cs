@@ -1,6 +1,6 @@
-﻿using Foundation;
-using SceneKit;
+﻿using SceneKit;
 using UIKit;
+using XamARKitSample.Extensions;
 
 namespace XamARKitSample.Nodes
 {
@@ -18,7 +18,7 @@ namespace XamARKitSample.Nodes
         private SCNGeometry CreateGeometry(string imageUrl, float width, float height)
         {
             var image = imageUrl.StartsWith("http")
-                ? FromUrl(imageUrl)
+                ? UIImageExtesnions.LoadFromUrl(imageUrl)
                 : UIImage.FromFile(imageUrl);
 
             var material = new SCNMaterial();
@@ -29,14 +29,6 @@ namespace XamARKitSample.Nodes
             geometry.Materials = new[] { material };
 
             return geometry;
-        }
-
-        private static UIImage FromUrl(string resource)
-        {
-            using var url = new NSUrl(resource);
-            using var imageData = NSData.FromUrl(url);
-
-            return UIImage.LoadFromData(imageData);
         }
     }
 }

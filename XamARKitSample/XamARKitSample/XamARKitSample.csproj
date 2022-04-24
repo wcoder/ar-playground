@@ -146,6 +146,11 @@
         <Compile Include="Nodes\ImageNode.cs" />
         <Compile Include="Nodes\CubeNode.cs" />
         <Compile Include="Extensions\SCNNodeExtensions.cs" />
+        <Compile Include="Nodes\SphereNode.cs" />
+        <Compile Include="Extensions\UIImageExtesnions.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <BundleResource Include="Resources\world-map.jpg" />
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

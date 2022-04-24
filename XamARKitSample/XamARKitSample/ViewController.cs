@@ -54,9 +54,16 @@ namespace XamARKitSample
             // add cude
             var cubeNode = new CubeNode(0.1f, UIColor.Blue)
             {
-                Position = new SCNVector3(0, 0, zPosition)
+                Position = new SCNVector3(0, 0, zPosition * 2)
             };
             _sceneView.Scene.RootNode.AddChildNode(cubeNode);
+
+            // add sphere
+            var sphereNode = new SphereNode(0.1f, "world-map.jpg")
+            {
+                Position = new SCNVector3(0.25f, 0.25f, zPosition * 2)
+            };
+            _sceneView.Scene.RootNode.AddChildNode(sphereNode);
 
             // add gestures
             var tapGestureRecognizer = new UITapGestureRecognizer(OnTapGesture);
@@ -64,6 +71,9 @@ namespace XamARKitSample
 
             var pinchGestureRecognizer = new UIPinchGestureRecognizer(OnPinchGesture);
             _sceneView.AddGestureRecognizer(pinchGestureRecognizer);
+
+            var rotationGestureRecognizer = new UIRotationGestureRecognizer(OnRotationGesture);
+            _sceneView.AddGestureRecognizer(rotationGestureRecognizer);
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -105,7 +115,6 @@ namespace XamARKitSample
         private void OnPinchGesture(UIPinchGestureRecognizer gestureRecognizer)
         {
             var hit = FindHit(gestureRecognizer);
-
             if (hit != null)
             {
                 var node = hit.Node;
@@ -115,6 +124,21 @@ namespace XamARKitSample
 
                 node.Scale = new SCNVector3(scaleX, scaleY, zPosition);
                 gestureRecognizer.Scale = 1; // reset
+            }
+        }
+
+        float _zAngle;
+        private void OnRotationGesture(UIRotationGestureRecognizer gestureRecognizer)
+        {
+            var hit = FindHit(gestureRecognizer);
+            if (hit != null)
+            {
+                var node = hit.Node;
+                if (node != null)
+                {
+                    _zAngle += (float)-gestureRecognizer.Rotation;
+                    node.EulerAngles = new SCNVector3(node.EulerAngles.X, node.EulerAngles.Y, _zAngle);
+                }
             }
         }
 

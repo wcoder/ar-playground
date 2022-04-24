@@ -3,15 +3,17 @@ using SceneKit;
 using System;
 using System.Linq;
 using UIKit;
+using XamARKitSample.Extensions;
 using XamARKitSample.Nodes;
 
 namespace XamARKitSample
 {
     public partial class ViewController : UIViewController
     {
-        private ARSCNView _sceneView;
-
         const float zPosition = -0.25f;
+
+        private ARSCNView _sceneView;
+        private bool _isAnimating;
 
         public ViewController(IntPtr handle) : base(handle)
         {
@@ -41,14 +43,22 @@ namespace XamARKitSample
                 WorldAlignment = ARWorldAlignment.Gravity
             }, ARSessionRunOptions.ResetTracking | ARSessionRunOptions.RemoveExistingAnchors);
 
+            // add image
             var imageUrl = "https://raw.githubusercontent.com/dotnet/brand/main/logo/dotnet-logo.png";
             var imageNode = new ImageNode(imageUrl, 0.1f, 0.1f)
             {
-                Position = new SCNVector3(0, 0, zPosition)
+                Position = new SCNVector3(0.5f, 0.5f, zPosition)
             };
-
             _sceneView.Scene.RootNode.AddChildNode(imageNode);
 
+            // add cude
+            var cubeNode = new CubeNode(0.1f, UIColor.Blue)
+            {
+                Position = new SCNVector3(0, 0, zPosition)
+            };
+            _sceneView.Scene.RootNode.AddChildNode(cubeNode);
+
+            // add gestures
             var tapGestureRecognizer = new UITapGestureRecognizer(OnTapGesture);
             _sceneView.AddGestureRecognizer(tapGestureRecognizer);
 
@@ -71,8 +81,25 @@ namespace XamARKitSample
         private void OnTapGesture(UITapGestureRecognizer gestureRecognizer)
         {
             var hit = FindHit(gestureRecognizer);
+            if (hit != null)
+            {
+                var node = hit.Node;
+                if (node != null)
+                {
+                    //hit.Node.RemoveFromParentNode();
 
-            hit?.Node?.RemoveFromParentNode();
+                    if (_isAnimating)
+                    {
+                        node.RemoveRotationAction();
+                        _isAnimating = false;
+                    }
+                    else
+                    {
+                        node.AddRotationAction(SCNActionTimingMode.Linear, 3, true);
+                        _isAnimating = true;
+                    }
+                }
+            }
         }
 
         private void OnPinchGesture(UIPinchGestureRecognizer gestureRecognizer)
